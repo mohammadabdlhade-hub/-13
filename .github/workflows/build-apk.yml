@@ -40,7 +40,7 @@ jobs:
 
     - name: Build Flet APK
       run: |
-        flet build apk --yes --verbose
+        flet build apk --project-name="calculatorapp" --org="com.calc.app" --yes --verbose
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
