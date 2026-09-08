@@ -35,37 +35,14 @@ jobs:
         channel: stable
         cache: true
 
-    - name: Accept Android Licenses Automatically
+    - name: Accept Android Licenses Correctly
       run: |
         mkdir -p /usr/local/lib/android/sdk/licenses
         echo "24333f8a63b6825ea9c5514f83c2829b004d1fb8" > /usr/local/lib/android/sdk/licenses/android-sdk-license
         echo "84831b9409646a918e30573bab4c9c91346d8abd" > /usr/local/lib/android/sdk/licenses/android-sdk-preview-license
-        yes | sdkmanager --licenses || true
-
-    - name: Create Valid Pubspec for Flet
-      run: |
-        cat <<EOF > pubspec.yaml
-        name: calculatorapp
-        description: A new Flet application.
-        publish_to: 'none'
-        version: 1.0.0+1
-
-        environment:
-          sdk: '>=3.0.0 <4.0.0'
-
-        dependencies:
-          flutter:
-            sdk: flutter
-          flet: ^0.25.0
-        EOF
+        echo "d56f5187479451eabf01fb78af6dfcb139a648b0" >> /usr/local/lib/android/sdk/licenses/android-sdk-license
+        flutter doctor --android-licenses || true
 
     - name: Build Flet APK
       run: |
-        flet build apk --yes --verbose
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-apk
-        path: build/apk/*.apk
-        if-no-files-found: error
+        flet build apk --name="calculatorapp" --yes --verbose
