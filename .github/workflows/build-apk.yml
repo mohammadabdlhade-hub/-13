@@ -35,8 +35,12 @@ jobs:
         channel: stable
         cache: true
 
-    - name: Accept Android Licenses
-      run: yes | flutter doctor --android-licenses
+    - name: Accept Android Licenses Automatically
+      run: |
+        mkdir -p /usr/local/lib/android/sdk/licenses
+        echo "24333f8a63b6825ea9c5514f83c2829b004d1fb8" > /usr/local/lib/android/sdk/licenses/android-sdk-license
+        echo "84831b9409646a918e30573bab4c9c91346d8abd" > /usr/local/lib/android/sdk/licenses/android-sdk-preview-license
+        yes | sdkmanager --licenses || true
 
     - name: Build Flet APK
       run: |
