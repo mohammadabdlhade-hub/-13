@@ -42,9 +42,26 @@ jobs:
         echo "84831b9409646a918e30573bab4c9c91346d8abd" > /usr/local/lib/android/sdk/licenses/android-sdk-preview-license
         yes | sdkmanager --licenses || true
 
+    - name: Create Valid Pubspec for Flet
+      run: |
+        cat <<EOF > pubspec.yaml
+        name: calculatorapp
+        description: A new Flet application.
+        publish_to: 'none'
+        version: 1.0.0+1
+
+        environment:
+          sdk: '>=3.0.0 <4.0.0'
+
+        dependencies:
+          flutter:
+            sdk: flutter
+          flet: ^0.25.0
+        EOF
+
     - name: Build Flet APK
       run: |
-        flet build apk --project-name="calculatorapp" --org="com.calc.app" --yes --verbose
+        flet build apk --yes --verbose
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
